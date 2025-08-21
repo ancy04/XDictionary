@@ -1,55 +1,51 @@
 import React, { useState } from "react";
 
-const customDictionary = {
-  teh: "the",
-  wrok: "work",
-  fot: "for",
-  exampl: "example",
-};
+// const customDictionary = {
+//   teh: "the",
+//   wrok: "work",
+//   fot: "for",
+//   exampl: "example",
+// };
+const customDictionary= [{ word: "React", meaning: "A JavaScript library for building user interfaces." },
+  {word: "Component", meaning: "A reusable building block in React." },
+  { word: "State", meaning: "An object that stores data for a component." }
+];
 
 function App() {
   const [text, setText] = useState("");
-  const [suggestion, setSuggestion] = useState("");
+  const [definition, setDefinition] = useState("");
 
   const handleChange = (e) => {
     const inputText = e.target.value;
-    setText(inputText);
-
-    if (inputText.trim() === "") {
-      setSuggestion("");
-      return;
-    }
-
-    const words = inputText.split(/\s+/);
-    const found = words.find((word) => {
-      const lowerWord = word.toLowerCase();
-      return customDictionary.hasOwnProperty(lowerWord);
-    });
-
-    if (found) {
-      const corrected = customDictionary[found.toLowerCase()];
-      setSuggestion(`Did you mean: ${corrected}?`);
-    } else {
-      setSuggestion("");
-    }
+    setText(inputText);     
   };
+
+  const handleSearch=()=>{
+    const resultObject= customDictionary.find(w => (w.word).toLowerCase() === text.toLowerCase())
+
+    if(resultObject){
+      setDefinition(resultObject.meaning)
+    }else{
+      setDefinition("Word not found in the dictionary.")
+      }
+  }
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-      <h2>Spell Checker</h2>
-      <textarea
+      <h2>Dictionary App</h2>
+      
+      <input
         rows="5"
         cols="50"
         value={text}
         onChange={handleChange}
-        placeholder="Type something..."
+        placeholder="Search for a word..."
         style={{ width: "100%", padding: "10px", fontSize: "16px" }}
       />
-      {suggestion && (
-        <p style={{ marginTop: "10px", fontWeight: "bold", color: "blue" }}>
-          {suggestion}
-        </p>
-      )}
+      <button onClick={handleSearch}>Search</button>
+      <div style={{display:"flex"}}>
+        <h3 style={{marginRight:"10px"}}>Definition:</h3>
+        <p>{definition}</p></div>
     </div>
   );
 }
