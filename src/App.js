@@ -35,6 +35,7 @@ function App() {
       <h2>Dictionary App</h2>
       
       <input
+        type="text"
         rows="5"
         cols="50"
         value={text}
